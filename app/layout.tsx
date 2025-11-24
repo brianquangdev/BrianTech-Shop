@@ -1,8 +1,8 @@
 import "./globals.css";
-import { Toaster} from "sonner"
+import { Toaster} from "@/components/ui/sonner"
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
+    <html lang="vi" suppressHydrationWarning>
       <body className="font-poppins antialiased">
         {children}
         <Toaster

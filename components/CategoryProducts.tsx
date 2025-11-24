@@ -19,9 +19,9 @@ const CategoryProducts = ({ categories, slug }: Props) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const handleCategoryChange = (newSlug: string) => {
-    if (newSlug === currentSlug) return; // Prevent unnecessary updates
+    if (newSlug === currentSlug) return;
     setCurrentSlug(newSlug);
-    router.push(`/category/${newSlug}`, { scroll: false }); // Update URL without
+    router.push(`/category/${newSlug}`, { scroll: false });
   };
 
   const fetchProducts = async (categorySlug: string) => {
@@ -62,7 +62,7 @@ const CategoryProducts = ({ categories, slug }: Props) => {
           <div className="flex flex-col items-center justify-center py-10 min-h-80 space-y-4 text-center bg-gray-100 rounded-lg w-full">
             <div className="flex items-center space-x-2 text-blue-600">
               <Loader2 className="w-5 h-5 animate-spin" />
-              <span>Product is loading...</span>
+              <span>Đang tải sản phẩm...</span>
             </div>
           </div>
         ) : products?.length > 0 ? (

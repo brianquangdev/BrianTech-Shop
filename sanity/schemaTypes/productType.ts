@@ -22,6 +22,8 @@
 import { TrolleyIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
+import { PriceInput } from "../components/PriceInput";
+
 export const productType = defineType({
   name: "product",
   title: "Products",
@@ -30,13 +32,13 @@ export const productType = defineType({
   fields: [
     defineField({
       name: "name",
-      title: "Product Name",
+      title: "Tên sản phẩm",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
-      title: "Slug",
+      title: "Đường dẫn (Slug)",
       type: "slug",
       options: {
         source: "name",
@@ -46,76 +48,82 @@ export const productType = defineType({
     }),
     defineField({
       name: "images",
-      title: "Product Images",
+      title: "Hình ảnh sản phẩm",
       type: "array",
       of: [{ type: "image", options: { hotspot: true } }],
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "Mô tả",
       type: "string",
     }),
     defineField({
       name: "price",
-      title: "Price",
+      title: "Giá",
       type: "number",
+      components: {
+        input: PriceInput,
+      },
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
       name: "discount",
-      title: "Discount",
+      title: "Giảm giá",
       type: "number",
+      components: {
+        input: PriceInput,
+      },
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
       name: "categories",
-      title: "Categories",
+      title: "Danh mục",
       type: "array",
       of: [{ type: "reference", to: { type: "category" } }],
     }),
     defineField({
       name: "stock",
-      title: "Stock",
+      title: "Kho hàng",
       type: "number",
       validation: (Rule) => Rule.min(0),
     }),
     defineField({
       name: "brand",
-      title: "Brand",
+      title: "Thương hiệu",
       type: "reference",
       to: { type: "brand" },
     }),
 
     defineField({
       name: "status",
-      title: "Product Status",
+      title: "Trạng thái sản phẩm",
       type: "string",
       options: {
         list: [
-          { title: "New", value: "new" },
+          { title: "Mới", value: "new" },
           { title: "Hot", value: "hot" },
-          { title: "Sale", value: "sale" },
+          { title: "Giảm giá", value: "sale" },
         ],
       },
     }),
     defineField({
       name: "variant",
-      title: "Product Type",
+      title: "Loại sản phẩm",
       type: "string",
       options: {
         list: [
-          { title: "Gadget", value: "gadget" },
-          { title: "Appliances", value: "appliances" },
-          { title: "Refrigerators", value: "refrigerators" },
-          { title: "Others", value: "others" },
+          { title: "Thiết bị", value: "gadget" },
+          { title: "Đồ điện tử", value: "appliances" },
+          { title: "Tủ lạnh", value: "refrigerators" },
+          { title: "Khác", value: "others" },
         ],
       },
     }),
     defineField({
       name: "isFeatured",
-      title: "Featured Product",
+      title: "Sản phẩm nổi bật",
       type: "boolean",
-      description: "Toggle to Featured on or off",
+      description: "Bật tắt trạng thái nổi bật",
       initialValue: false,
     }),
   ],
@@ -128,9 +136,17 @@ export const productType = defineType({
     prepare(selection) {
       const { title, subtitle, media } = selection;
       const image = media && media[0];
+      
+      const formattedPrice = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(subtitle || 0);
+
       return {
         title: title,
-        subtitle: `$${subtitle}`,
+        subtitle: formattedPrice,
         media: image,
       };
     },

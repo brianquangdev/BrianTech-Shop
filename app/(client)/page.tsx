@@ -11,7 +11,6 @@ import LatestBlog from '@/components/LatestBlog';
 const Home = async () => {
   const categories = await getCategories(6);
   
-
   return (
     <Container>
       <HomeBanner />

@@ -18,7 +18,6 @@ const ProductCard = ({ product }: { product: Product }) => {
           <Image
             src={urlFor(product.images[0]).url()}
             alt="ProductImage"
-            loading="lazy"
             width={700}
             height={700}
             priority
@@ -36,7 +35,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           group-hover:border-shop_light_green 
           group-hover:text-shop_light_green hoverEffect"
           >
-            Sale!
+            Giảm giá!
           </p>
         )}
 
@@ -47,7 +46,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           group-hover:border-shop_light_green 
           group-hover:text-shop_light_green hoverEffect"
           >
-            New!
+            Mới!
           </p>
         )}
 
@@ -90,15 +89,15 @@ const ProductCard = ({ product }: { product: Product }) => {
             ))}
           </div>
           <p className="text-xs text-shop_light_text tracking-wide">
-            5 reviews{' '}
+            5 đánh giá{' '}
           </p>
         </div>
         <div className="flex items-center gap-2.5">
-          <p className="font-medium">In Stock</p>
+          <p className="font-medium">Còn hàng</p>
           <p
             className={`${product?.stock === 0 ? 'text-red-600' : 'text-shop_dark_green/80 font-semibold'}`}
           >
-            {(product?.stock as number) > 0 ? product?.stock : 'unavailable'}
+            {(product?.stock as number) > 0 ? product?.stock : 'Hết hàng'}
           </p>
         </div>
 

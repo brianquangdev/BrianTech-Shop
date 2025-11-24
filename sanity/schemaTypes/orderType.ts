@@ -110,9 +110,16 @@ export const orderType = defineType({
               currency: "product.currency",
             },
             prepare(select) {
+              const formattedPrice = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(select.price * select.quantity);
+              
               return {
                 title: `${select.product} x ${select.quantity}`,
-                subtitle: `${select.price * select.quantity}`,
+                subtitle: formattedPrice,
                 media: select.image,
               };
             },
@@ -143,11 +150,11 @@ export const orderType = defineType({
       title: "Shipping Address",
       type: "object",
       fields: [
-        defineField({ name: "state", title: "State", type: "string" }),
-        defineField({ name: "zip", title: "Zip Code", type: "string" }),
-        defineField({ name: "city", title: "City", type: "string" }),
-        defineField({ name: "address", title: "Address", type: "string" }),
-        defineField({ name: "name", title: "Name", type: "string" }),
+        defineField({ name: "state", title: "Tỉnh/Thành phố", type: "string" }),
+        defineField({ name: "zip", title: "Mã bưu điện", type: "string" }),
+        defineField({ name: "city", title: "Quận/Huyện", type: "string" }),
+        defineField({ name: "address", title: "Địa chỉ", type: "string" }),
+        defineField({ name: "name", title: "Tên người nhận", type: "string" }),
       ],
     }),
     defineField({
@@ -183,9 +190,16 @@ export const orderType = defineType({
     },
     prepare(select) {
       const orderIdSnippet = `${select.orderId.slice(0, 5)}...${select.orderId.slice(-5)}`;
+      const formattedAmount = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(select.amount);
+      
       return {
         title: `${select.name} (${orderIdSnippet})`,
-        subtitle: `${select.amount} ${select.currency}, ${select.email}`,
+        subtitle: `${formattedAmount}, ${select.email}`,
         media: BasketIcon,
       };
     },

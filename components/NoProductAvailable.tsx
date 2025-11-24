@@ -32,11 +32,11 @@ const NoProductAvailable = ({
         transition={{ delay: 0.2, duration: 0.5 }}
         className="text-gray-600"
       >
-        Rất tiếc &apos; nhưng hiện không có sản phẩm nào phù hợp với{' '}
+        Rất tiếc, nhưng hiện không có sản phẩm nào phù hợp với mục{' '}
         <span className="text-darkColor text-base font-semibold">
           {selectedTab}
         </span>{' '}
-        tiêu chí.
+
       </motion.p>
 
       <motion.div

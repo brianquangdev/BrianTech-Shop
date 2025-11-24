@@ -18,7 +18,10 @@ const ProductGrid = () => {
   const query = `*[_type == "product" && variant == $variant] | order(name asc){
   ...,"categories": categories[]->title
 }`;
-  const params = { variant: selectedTab.toLowerCase() };
+  const params = {
+    variant:
+      productType.find((item) => item.title === selectedTab)?.value || '',
+  };
 
   useEffect(() => {
     const fetchData = async () => {
