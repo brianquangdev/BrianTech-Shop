@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-const PaymentFailurePage = () => {
+const PaymentFailureContent = () => {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
   const code = searchParams.get('code');
@@ -54,13 +55,26 @@ const PaymentFailurePage = () => {
             )}
 
             <div className="space-y-3">
-              <Link href="/cart" className="block">
-                <Button className="w-full" size="lg">
+              <Link
+                href="/cart"
+                className="block"
+              >
+                <Button
+                  className="w-full"
+                  size="lg"
+                >
                   Quay lại giỏ hàng
                 </Button>
               </Link>
-              <Link href="/" className="block">
-                <Button variant="outline" className="w-full" size="lg">
+              <Link
+                href="/"
+                className="block"
+              >
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  size="lg"
+                >
                   Về trang chủ
                 </Button>
               </Link>
@@ -73,6 +87,14 @@ const PaymentFailurePage = () => {
         </div>
       </Container>
     </div>
+  );
+};
+
+const PaymentFailurePage = () => {
+  return (
+    <Suspense fallback={<div>Đang tải...</div>}>
+      <PaymentFailureContent />
+    </Suspense>
   );
 };
 

@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import useStore from '@/store';
 
-const PaymentSuccessPage = () => {
+const PaymentSuccessContent = () => {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
   const { resetCart } = useStore();
@@ -41,25 +41,47 @@ const PaymentSuccessPage = () => {
             )}
 
             <div className="space-y-3">
-              <Link href="/" className="block">
-                <Button className="w-full" size="lg">
+              <Link
+                href="/"
+                className="block"
+              >
+                <Button
+                  className="w-full"
+                  size="lg"
+                >
                   Tiếp tục mua sắm
                 </Button>
               </Link>
-              <Link href="/orders" className="block">
-                <Button variant="outline" className="w-full" size="lg">
+              <Link
+                href="/orders"
+                className="block"
+              >
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  size="lg"
+                >
                   Xem đơn hàng
                 </Button>
               </Link>
             </div>
 
             <p className="text-xs text-gray-500 mt-6">
-              Chúng tôi đã gửi email xác nhận đơn hàng đến địa chỉ email của bạn.
+              Chúng tôi đã gửi email xác nhận đơn hàng đến địa chỉ email của
+              bạn.
             </p>
           </div>
         </div>
       </Container>
     </div>
+  );
+};
+
+const PaymentSuccessPage = () => {
+  return (
+    <Suspense fallback={<div>Đang tải...</div>}>
+      <PaymentSuccessContent />
+    </Suspense>
   );
 };
 
