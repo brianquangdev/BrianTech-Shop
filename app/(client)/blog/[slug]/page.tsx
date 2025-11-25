@@ -1,19 +1,19 @@
-import Container from "@/components/Container";
-import Title from "@/components/Title";
-import { SINGLE_BLOG_QUERYResult } from "@/sanity.types";
-import { urlFor } from "@/sanity/lib/image";
+import Container from '@/components/Container';
+import Title from '@/components/Title';
+import { SINGLE_BLOG_QUERYResult } from '@/sanity.types';
+import { urlFor } from '@/sanity/lib/image';
 import {
   getBlogCategories,
   getOthersBlog,
   getSingleBlog,
-} from "@/sanity/queries";
-import dayjs from "dayjs";
-import { Calendar, ChevronLeftIcon, Pencil } from "lucide-react";
-import { PortableText } from "next-sanity";
-import Image from "next/image";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import React from "react";
+} from '@/sanity/queries';
+import dayjs from 'dayjs';
+import { Calendar, ChevronLeftIcon, Pencil } from 'lucide-react';
+import { PortableText } from 'next-sanity';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import React from 'react';
 
 const SingleBlogPage = async ({
   params,
@@ -31,7 +31,7 @@ const SingleBlogPage = async ({
           {blog?.mainImage && (
             <Image
               src={urlFor(blog?.mainImage).url()}
-              alt={blog.title || "Blog Image"}
+              alt={blog.title || 'Blog Image'}
               width={800}
               height={800}
               className="w-full max-h-[500px] object-cover rounded-lg"
@@ -57,8 +57,8 @@ const SingleBlogPage = async ({
                 <span className="absolute left-0 -bottom-1.5 bg-lightColor/30 inline-block w-full h-[2px] group-hover:bg-shop_dark_green hoverEffect" />
               </p>
               <p className="flex items-center gap-1 text-lightColor relative group hover:cursor-pointer hover:text-shop_dark_green hoverEffect">
-                <Calendar size={15} />{" "}
-                {dayjs(blog.publishedAt).format("MMMM D, YYYY")}
+                <Calendar size={15} />{' '}
+                {dayjs(blog.publishedAt).format('MMMM D, YYYY')}
                 <span className="absolute left-0 -bottom-1.5 bg-lightColor/30 inline-block w-full h-[2px] group-hover:bg-shop_dark_green hoverEffect" />
               </p>
             </div>
@@ -95,7 +95,7 @@ const SingleBlogPage = async ({
                         types: {
                           image: ({ value }) => (
                             <Image
-                              alt={value.alt || ""}
+                              alt={value.alt || ''}
                               src={urlFor(value).width(2000).url()}
                               className="w-full rounded-2xl"
                               width={1400}
@@ -104,11 +104,11 @@ const SingleBlogPage = async ({
                           ),
                           separator: ({ value }) => {
                             switch (value.style) {
-                              case "line":
+                              case 'line':
                                 return (
                                   <hr className="my-5 border-t border-gray-200" />
                                 );
-                              case "space":
+                              case 'space':
                                 return <div className="my-5" />;
                               default:
                                 return null;
@@ -173,10 +173,13 @@ const SingleBlogPage = async ({
                     />
                   )}
                   <div className="mt-10">
-                    <Link href="/blog" className="flex items-center gap-1">
+                    <Link
+                      href="/blog"
+                      className="flex items-center gap-1"
+                    >
                       <ChevronLeftIcon className="size-5" />
                       <span className="text-sm font-semibold">
-                        Back to blog
+                        Quay lại trang tin tức
                       </span>
                     </Link>
                   </div>
@@ -198,7 +201,7 @@ const BlogLeft = async ({ slug }: { slug: string }) => {
   return (
     <div>
       <div className="border border-lightColor p-5 rounded-md">
-        <Title className="text-base">Blog Categories</Title>
+        <Title className="text-base">Danh mục tin tức</Title>
         <div className="space-y-2 mt-2">
           {categories?.map(({ blogcategories }, index) => (
             <div
@@ -212,7 +215,7 @@ const BlogLeft = async ({ slug }: { slug: string }) => {
         </div>
       </div>
       <div className="border border-lightColor p-5 rounded-md mt-10">
-        <Title className="text-base">Latest Blogs</Title>
+        <Title className="text-base">Bài viết mới nhất</Title>
         <div className="space-y-4 mt-4">
           {blogs?.map((blog: Blog, index: number) => (
             <Link
