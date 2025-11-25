@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import { ShoppingBag } from 'lucide-react';
 import useStore from '@/store';
-import { toast } from 'sonner';
+import toast from 'react-hot-toast';
 import PriceFormatter from './PriceFormatter';
 import QuantityButtons from './QuantityButtons';
 
@@ -22,7 +22,7 @@ const AddToCartButton = ({ product, className }: Props) => {
     if ((product?.stock as number) > itemCount) {
       addItem(product);
       toast.success(
-        `${product?.name?.substring(0, 12)}... đã được thêm vào giỏ hàng!`
+        `Đã thêm vào giỏ hàng!`
       );
     } else {
       toast.error('Không thể thêm nhiều hơn số lượng có sẵn');

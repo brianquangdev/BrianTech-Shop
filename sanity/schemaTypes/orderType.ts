@@ -2,25 +2,25 @@
  * Order Type Schema
  * 
  * Schema này định nghĩa cấu trúc cho đơn hàng (orders) trong hệ thống e-commerce.
- * Tích hợp với Stripe để xử lý thanh toán và Clerk để quản lý user.
+ * Tích hợp với MoMo và VNPay để xử lý thanh toán và Clerk để quản lý user.
  * 
  * Fields:
  * - orderNumber: Mã đơn hàng
- * - invoice: Thông tin hóa đơn từ Stripe
- * - stripeCheckoutSessionId: ID phiên checkout Stripe
- * - stripeCustomerId: ID khách hàng trên Stripe
  * - clerkUserId: ID người dùng từ Clerk
  * - customerName: Tên khách hàng
  * - email: Email khách hàng
- * - stripePaymentIntentId: ID thanh toán Stripe
+ * - paymentMethod: Phương thức thanh toán (momo/vnpay)
+ * - paymentStatus: Trạng thái thanh toán (pending/success/failed/cancelled)
+ * - transactionId: ID giao dịch từ payment gateway
  * - products: Danh sách sản phẩm trong đơn (với số lượng)
  * - totalPrice: Tổng giá trị đơn hàng
- * - currency: Loại tiền tệ
+ * - currency: Loại tiền tệ (VND)
  * - amountDiscount: Số tiền giảm giá
  * - address: Địa chỉ giao hàng
  * - status: Trạng thái đơn hàng (pending/processing/paid/shipped/delivered/cancelled)
  * - orderDate: Ngày đặt hàng
  */
+
 
 import { BasketIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
@@ -37,31 +37,10 @@ export const orderType = defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
-    {
-      name: "invoice",
-      type: "object",
-      fields: [
-        { name: "id", type: "string" },
-        { name: "number", type: "string" },
-        { name: "hosted_invoice_url", type: "url" },
-      ],
-    },
-    defineField({
-      name: "stripeCheckoutSessionId",
-      title: "Stripe Checkout Session ID",
-      type: "string",
-    }),
-    defineField({
-      name: "stripeCustomerId",
-      title: "Stripe Customer ID",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
     defineField({
       name: "clerkUserId",
       title: "Store User ID",
       type: "string",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "customerName",
@@ -76,10 +55,37 @@ export const orderType = defineType({
       validation: (Rule) => Rule.required().email(),
     }),
     defineField({
-      name: "stripePaymentIntentId",
-      title: "Stripe Payment Intent ID",
+      name: "paymentMethod",
+      title: "Payment Method",
       type: "string",
+      options: {
+        list: [
+          { title: "MoMo", value: "momo" },
+          { title: "VNPay", value: "vnpay" },
+        ],
+      },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "paymentStatus",
+      title: "Payment Status",
+      type: "string",
+      options: {
+        list: [
+          { title: "Pending", value: "pending" },
+          { title: "Success", value: "success" },
+          { title: "Failed", value: "failed" },
+          { title: "Cancelled", value: "cancelled" },
+        ],
+      },
+      initialValue: "pending",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "transactionId",
+      title: "Transaction ID",
+      type: "string",
+      description: "ID giao dịch từ payment gateway (MoMo/VNPay)",
     }),
     defineField({
       name: "products",

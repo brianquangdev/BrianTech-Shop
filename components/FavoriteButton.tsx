@@ -3,8 +3,8 @@ import { Product } from '@/sanity.types';
 import useStore from '@/store';
 import { Heart } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
-import { toast } from 'sonner';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const FavoriteButton = ({
   showProduct = false,
@@ -14,9 +14,13 @@ const FavoriteButton = ({
   product?: Product | null | undefined;
 }) => {
   const { favoriteProduct, addToFavorite } = useStore();
-  const existingProduct = favoriteProduct.find(
-    (item) => item?._id === product?._id
-  );
+  const [existingProduct, setExistingProduct] = useState<Product | null>(null);
+  useEffect(() => {
+    const availableItem = favoriteProduct.find(
+      (item) => item?._id === product?._id
+    );
+    setExistingProduct(availableItem || null);
+  }, [product, favoriteProduct]);
 
   const handleFavorite = (e: React.MouseEvent<HTMLSpanElement>) => {
     e.preventDefault();
@@ -24,8 +28,8 @@ const FavoriteButton = ({
       addToFavorite(product).then(() => {
         toast.success(
           existingProduct
-            ? 'Đã xóa sản phẩm khỏi danh sách yêu thích!'
-            : 'Đã thêm sản phẩm vào danh sách yêu thích!'
+            ? 'Đã xóa khỏi danh sách yêu thích!'
+            : 'Sản phẩm đã được thêm vào danh sách yêu thích!'
         );
       });
     }

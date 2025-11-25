@@ -14,18 +14,18 @@ export const quickLinksData = [
 	{ title: "Trợ giúp", href: "/help" },
 ];
 export const categoriesData = [
-	{ title: "Điện thoại", href: "mobiles" },
-	{ title: "Thiết bị điện tử", href: "appliances" },
-	{ title: "Điện thoại thông minh", href: "smartphones" },
-	{ title: "Máy điều hòa", href: "air-conditioners" },
-	{ title: "Máy giặt", href: "washing-machine" },
+	{ title: "Điện thoại", href: "dien-thoai" },
+	{ title: "Thiết bị điện tử", href: "thiet-bi-dien-tu" },
+	{ title: "Điện thoại thông minh", href: "dien-thoai-thong-minh" },
+	{ title: "Máy điều hòa", href: "may-dieu-hoa" },
+	{ title: "Máy giặt", href: "may-giat" },
 	{
 		title: "Thiết bị nhà bếp",
-		href: "kitchen-appliances",
+		href: "thiet-bi-nha-bep",
 	},
 	{
 		title: "Phụ kiện thiết bị",
-		href: "gadget-accessories",
+		href: "phu-kien-thiet-bi",
 	},
 ];
 export const productType = [

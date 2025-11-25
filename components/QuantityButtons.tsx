@@ -4,11 +4,12 @@ import React from 'react';
 import { Button } from './ui/button';
 import { Minus, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
+import toast from 'react-hot-toast';
 
 interface Props {
   product: Product;
   className?: string;
+  
 }
 const QuantityButtons = ({ product, className }: Props) => {
   const { addItem, removeItem, getItemCount } = useStore();
@@ -18,18 +19,18 @@ const QuantityButtons = ({ product, className }: Props) => {
   const handleRemoveProduct = () => {
     removeItem(product?._id);
     if (itemCount > 1) {
-      toast.success('Quantity Decreased successfully!');
+      toast.success('Giảm số lượng thành công!');
     } else {
-      toast.success(`${product?.name?.substring(0, 12)} removed successfully!`);
+      toast.success(`${product?.name?.substring(0, 12)} đã được xóa thành công!`);
     }
   };
 
   const handleAddToCart = () => {
     if ((product?.stock as number) > itemCount) {
       addItem(product);
-      toast.success('Quantity Increased successfully!');
+      toast.success('Tăng số lượng thành công!');
     } else {
-      toast.error('Can not add more than available stock');
+      toast.error('Số lượng trong kho không đủ!');
     }
   };
 

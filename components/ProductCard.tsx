@@ -1,62 +1,41 @@
-import React from 'react';
-import { Product } from '@/sanity.types';
-import Image from 'next/image';
-import Link from 'next/link';
-import { urlFor } from '@/sanity/lib/image';
-import { Flame } from 'lucide-react';
-import AddToWishlistButton from './AddToWishlistButton';
-import Title from './Title';
-import { StarIcon } from 'lucide-react';
-import PriceView from './PriceView';
-import AddToCartButton from './AddToCartButton';
+import { Product } from "@/sanity.types";
+import { urlFor } from "@/sanity/lib/image";
+import Image from "next/image";
+import React from "react";
+import Link from "next/link";
+import { StarIcon } from "@sanity/icons";
+import { Flame } from "lucide-react";
+import PriceView from "./PriceView";
+import Title from "./Title";
+import ProductSideMenu from "./ProductSideMenu";
+import AddToCartButton from "./AddToCartButton";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <div className="text-sm border-[1px] border-dark_blue/20 rounded-md bg-white group">
+    <div className="text-sm border-[1px] rounded-md border-darkBlue/20 group bg-white">
       <div className="relative group overflow-hidden bg-shop_light_bg">
         {product?.images && (
-          <Image
-            src={urlFor(product.images[0]).url()}
-            alt="ProductImage"
-            width={700}
-            height={700}
-            priority
-            className={`w-full h-64 object-contain overflow-hidden 
-              transition-transform bg-shop_light_bg duration-500 
-              ${product?.stock !== 0 ? 'group-hover:scale-105' : 'opacity-50'}`}
-          />
+          <Link href={`/product/${product?.slug?.current}`}>
+            <Image
+              src={urlFor(product.images[0]).url()}
+              alt="productImage"
+              width={500}
+              height={500}
+              priority
+              className={`w-full h-64 object-contain overflow-hidden transition-transform bg-shop_light_bg duration-500 
+              ${product?.stock !== 0 ? "group-hover:scale-105" : "opacity-50"}`}
+            />
+          </Link>
         )}
-
-        <AddToWishlistButton product={product} />
-        {product?.status === 'sale' && (
-          <p
-            className="absolute top-2 left-2 z-10 text-xs border 
-          border-darkColor/50 px-2 rounded-full 
-          group-hover:border-shop_light_green 
-          group-hover:text-shop_light_green hoverEffect"
-          >
+        <ProductSideMenu product={product} />
+        {product?.status === "sale" ? (
+          <p className="absolute top-2 left-2 z-10 text-xs border border-darkColor/50 px-2 rounded-full group-hover:border-lightGreen hover:text-shop_dark_green hoverEffect">
             Giảm giá!
           </p>
-        )}
-
-        {product?.status === 'new' && (
-          <p
-            className="absolute top-2 left-2 z-10 text-xs border 
-          border-darkColor/50 px-2 rounded-full 
-          group-hover:border-shop_light_green 
-          group-hover:text-shop_light_green hoverEffect"
-          >
-            Mới!
-          </p>
-        )}
-
-        {product?.status === 'hot' && (
+        ) : (
           <Link
-            href={'/deal'}
-            className="absolute top-2 left-2 z-10 border
-          border-shop_orange/50 p-1 rounded-full 
-          group-hover:border-shop_orange 
-          group-hover:text-shop_dark_green hoverEffect"
+            href={"/deal"}
+            className="absolute top-2 left-2 z-10 border border-shop_orange/50 p-1 rounded-full group-hover:border-shop_orange hover:text-shop_dark_green hoverEffect"
           >
             <Flame
               size={18}
@@ -68,8 +47,8 @@ const ProductCard = ({ product }: { product: Product }) => {
       </div>
       <div className="p-3 flex flex-col gap-2">
         {product?.categories && (
-          <p className="uppercase line-clamp-1 text-xs text-shop_light_text ">
-            {product?.categories?.map((cat) => cat).join(', ')}
+          <p className="uppercase line-clamp-1 text-xs font-medium text-lightText">
+            {product.categories.map((cat) => cat).join(", ")}
           </p>
         )}
         <Title className="text-sm line-clamp-1">{product?.name}</Title>
@@ -77,27 +56,23 @@ const ProductCard = ({ product }: { product: Product }) => {
           <div className="flex items-center">
             {[...Array(5)].map((_, index) => (
               <StarIcon
-                size={12}
                 key={index}
                 className={
-                  index < 4
-                    ? 'text-shop_lighter_green'
-                    : 'text-shop_ligher_text'
+                  index < 4 ? "text-shop_light_green" : " text-lightText"
                 }
-                fill={index < 4 ? '#93D991' : '#ababab'}
+                fill={index < 4 ? "#93D991" : "#ababab"}
               />
             ))}
           </div>
-          <p className="text-xs text-shop_light_text tracking-wide">
-            5 đánh giá{' '}
-          </p>
+          <p className="text-lightText text-xs tracking-wide">5 Đánh giá</p>
         </div>
+
         <div className="flex items-center gap-2.5">
           <p className="font-medium">Còn hàng</p>
           <p
-            className={`${product?.stock === 0 ? 'text-red-600' : 'text-shop_dark_green/80 font-semibold'}`}
+            className={`${product?.stock === 0 ? "text-red-600" : "text-shop_dark_green/80 font-semibold"}`}
           >
-            {(product?.stock as number) > 0 ? product?.stock : 'Hết hàng'}
+            {(product?.stock as number) > 0 ? product?.stock : "Hết hàng"}
           </p>
         </div>
 
@@ -106,10 +81,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           discount={product?.discount}
           className="text-sm"
         />
-        <AddToCartButton
-          product={product}
-          className="w-36 rounded-full"
-        />
+        <AddToCartButton product={product} className="w-36 rounded-full" />
       </div>
     </div>
   );
