@@ -179,7 +179,7 @@ const SingleBlogPage = async ({
                     >
                       <ChevronLeftIcon className="size-5" />
                       <span className="text-sm font-semibold">
-                        Quay lại trang tin tức
+                        Quay lại tin tức
                       </span>
                     </Link>
                   </div>

@@ -1,3 +1,4 @@
+import { backendClient } from '../lib/backendClient';
 import { sanityFetch } from '../lib/live';
 import {
   BLOG_CATEGORIES,
@@ -92,13 +93,10 @@ const getBrand = async (slug: string) => {
 };
 const getMyOrders = async (userId: string) => {
   try {
-    const orders = await sanityFetch({
-      query: MY_ORDERS_QUERY,
-      params: { userId },
-    });
-    return orders?.data || null;
+    const orders = await backendClient.fetch(MY_ORDERS_QUERY, { userId });
+    return orders || null;
   } catch (error) {
-    console.error('Error fetching product by ID:', error);
+    console.error('Error fetching orders:', error);
     return null;
   }
 };
