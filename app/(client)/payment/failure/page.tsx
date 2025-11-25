@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
+export const dynamic = 'force-dynamic';
+
 const PaymentFailureContent = () => {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');

@@ -8,6 +8,8 @@ import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
 import useStore from '@/store';
 
+export const dynamic = 'force-dynamic';
+
 const PaymentSuccessContent = () => {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
