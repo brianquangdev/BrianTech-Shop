@@ -1,5 +1,4 @@
 import { verifyVNPayReturn } from '@/actions/createVNPayPayment';
-import { updateOrderStatus } from '@/sanity/helpers/orders';
 import { NextRequest, NextResponse } from 'next/server';
 import { ReturnQueryFromVNPay } from 'vnpay';
 
@@ -12,34 +11,38 @@ export async function GET(request: NextRequest) {
       params[key] = value;
     });
 
-    // Verify signature
-    const verify = await verifyVNPayReturn(params as unknown as ReturnQueryFromVNPay);
+    console.log('VNPay IPN received:', params);
 
-    if (!verify.isSuccess) {
+    // Verify signature and update order status
+    // The verifyVNPayReturn function now handles both verification and order update
+    const result = await verifyVNPayReturn(params as unknown as ReturnQueryFromVNPay);
+
+    if (!result.isSuccess) {
+      console.error('VNPay IPN: Invalid signature');
       return NextResponse.json(
         { RspCode: '97', Message: 'Invalid Checksum' },
         { status: 200 }
       );
     }
 
-    // Check transaction status
+    // Check if order was updated successfully
     const responseCode = params['vnp_ResponseCode'];
-    const orderId = params['vnp_TxnRef'];
-
+    
     if (responseCode === '00') {
       // Payment successful
-      if (orderId) {
-        console.log(`IPN: Updating order ${orderId} to paid`);
-        await updateOrderStatus(orderId, 'paid');
+      if ('orderUpdateSuccess' in result && result.orderUpdateSuccess) {
+        console.log(`VNPay IPN: Order ${params['vnp_TxnRef']} updated successfully`);
+      } else {
+        console.warn(`VNPay IPN: Payment successful but order update may have failed`);
       }
+      
       return NextResponse.json(
         { RspCode: '00', Message: 'Confirm Success' },
         { status: 200 }
       );
     } else {
       // Payment failed
-      console.log(`IPN: Payment failed for order ${orderId} with code ${responseCode}`);
-      // Optionally update order status to 'failed' if you have that status
+      console.log(`VNPay IPN: Payment failed with code ${responseCode}`);
       return NextResponse.json(
         { RspCode: '00', Message: 'Confirm Success' },
         { status: 200 }
@@ -47,7 +50,7 @@ export async function GET(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('IPN Error:', error);
+    console.error('VNPay IPN Error:', error);
     return NextResponse.json(
       { RspCode: '99', Message: 'Unknown Error' },
       { status: 200 }

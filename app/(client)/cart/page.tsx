@@ -95,7 +95,13 @@ const CartPage = () => {
       let paymentUrl: string | null = null;
 
       if (paymentMethod === 'momo') {
-        paymentUrl = await createMoMoPayment(groupedItems, metadata);
+        const result = await createMoMoPayment(groupedItems, metadata);
+        if (result.error) {
+          toast.error(result.error);
+          setLoading(false);
+          return;
+        }
+        paymentUrl = result.url;
       } else if (paymentMethod === 'vnpay') {
         paymentUrl = await createVNPayPayment(groupedItems, metadata);
       }

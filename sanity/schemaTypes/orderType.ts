@@ -185,6 +185,18 @@ export const orderType = defineType({
       type: "datetime",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "paidAt",
+      title: "Paid At",
+      type: "datetime",
+      description: "Thời gian khách hàng thanh toán thành công qua VNPay/MoMo",
+    }),
+    defineField({
+      name: "vnpayTransactionNo",
+      title: "VNPay Transaction Number",
+      type: "string",
+      description: "Mã giao dịch VNPay (vnp_TransactionNo)",
+    }),
   ],
   preview: {
     select: {

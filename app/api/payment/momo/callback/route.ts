@@ -19,14 +19,28 @@ export async function POST(req: NextRequest) {
 
     const { orderId, resultCode, transId } = body;
 
-    // Update order status trong Sanity
+    // Find the order by orderNumber (which is passed as orderId from MoMo)
+    const order = await client.fetch(
+      `*[_type == "order" && orderNumber == $orderNumber][0]`,
+      { orderNumber: orderId }
+    );
+
+    if (!order) {
+      console.error(`Order with number ${orderId} not found`);
+      return NextResponse.json(
+        { message: 'Order not found' },
+        { status: 404 }
+      );
+    }
+
+    // Update order status trong Sanity using the real _id
     if (resultCode === 0) {
       // Payment successful
       await client
-        .patch(orderId)
+        .patch(order._id)
         .set({
           paymentStatus: 'success',
-          transactionId: transId,
+          transactionId: transId.toString(),
           status: 'paid',
         })
         .commit();
@@ -35,10 +49,10 @@ export async function POST(req: NextRequest) {
     } else {
       // Payment failed
       await client
-        .patch(orderId)
+        .patch(order._id)
         .set({
           paymentStatus: 'failed',
-          transactionId: transId,
+          transactionId: transId.toString(),
         })
         .commit();
 

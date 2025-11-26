@@ -182,17 +182,12 @@ export type Order = {
   _updatedAt: string;
   _rev: string;
   orderNumber?: string;
-  invoice?: {
-    id?: string;
-    number?: string;
-    hosted_invoice_url?: string;
-  };
-  stripeCheckoutSessionId?: string;
-  stripeCustomerId?: string;
   clerkUserId?: string;
   customerName?: string;
   email?: string;
-  stripePaymentIntentId?: string;
+  paymentMethod?: 'momo' | 'vnpay';
+  paymentStatus?: 'pending' | 'success' | 'failed' | 'cancelled';
+  transactionId?: string;
   products?: Array<{
     product?: {
       _ref: string;
@@ -222,6 +217,8 @@ export type Order = {
     | 'delivered'
     | 'cancelled';
   orderDate?: string;
+  paidAt?: string;
+  vnpayTransactionNo?: string;
 };
 
 export type Product = {
@@ -301,7 +298,6 @@ export type Category = {
   description?: string;
   range?: number;
   featured?: boolean;
-  productCount?: number;
   image?: {
     asset?: {
       _ref: string;
@@ -590,17 +586,12 @@ export type MY_ORDERS_QUERYResult = Array<{
   _updatedAt: string;
   _rev: string;
   orderNumber?: string;
-  invoice?: {
-    id?: string;
-    number?: string;
-    hosted_invoice_url?: string;
-  };
-  stripeCheckoutSessionId?: string;
-  stripeCustomerId?: string;
   clerkUserId?: string;
   customerName?: string;
   email?: string;
-  stripePaymentIntentId?: string;
+  paymentMethod?: 'momo' | 'vnpay';
+  paymentStatus?: 'cancelled' | 'failed' | 'pending' | 'success';
+  transactionId?: string;
   products: Array<{
     product: {
       _id: string;
@@ -666,6 +657,8 @@ export type MY_ORDERS_QUERYResult = Array<{
     | 'processing'
     | 'shipped';
   orderDate?: string;
+  paidAt?: string;
+  vnpayTransactionNo?: string;
 }>;
 // Variable: GET_ALL_BLOG
 // Query: *[_type == 'blog'] | order(publishedAt desc)[0...$quantity]{  ...,       blogcategories[]->{    title}    }

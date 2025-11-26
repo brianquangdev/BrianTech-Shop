@@ -7,6 +7,7 @@ export interface OrderMetadata {
   customerEmail: string;
   clerkUserId?: string;
   address: Address | null;
+  paymentMethod?: "vnpay" | "momo";
 }
 
 export interface OrderItem {
@@ -22,7 +23,7 @@ export async function createOrder(items: OrderItem[], metadata: OrderMetadata) {
       customerName: metadata.customerName,
       email: metadata.customerEmail,
       clerkUserId: metadata.clerkUserId,
-      paymentMethod: "vnpay", // Default to vnpay for now as this is used in VNPay flow
+      paymentMethod: metadata.paymentMethod || "vnpay", 
       paymentStatus: "pending",
       address: metadata.address
         ? {
@@ -73,12 +74,20 @@ export async function updateOrderStatus(
       throw new Error(`Order with number ${orderNumber} not found`);
     }
 
-    // Update the status
-    await backendClient
-      .patch(order._id)
-      .set({ status: status })
-      .commit();
+    // Determine payment status based on order status
+    const paymentStatus = status === "paid" ? "paid" : status === "cancelled" ? "failed" : "pending";
 
+    // Use createOrReplace instead of patch - this might have better permission handling
+    const updatedOrder = {
+      ...order,
+      status: status,
+      paymentStatus: paymentStatus,
+      _type: "order",
+    };
+
+    await backendClient.createOrReplace(updatedOrder);
+
+    console.log(`✅ Order ${orderNumber} updated to status: ${status}, paymentStatus: ${paymentStatus}`);
     return { success: true };
   } catch (error) {
     console.error("Error updating order status:", error);
