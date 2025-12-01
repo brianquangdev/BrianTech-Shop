@@ -41,7 +41,9 @@ npm install
 npm run dev
 ```
 
-Mở [https://brian-tech-shop.vercel.app](https://brian-tech-shop.vercel.app) để xem kết quả.
+Mở [https://briantech-landingpage.framer.website/](https://briantech-landingpage.framer.website/) để xem kết quả.
+
+**(Vercel)**: [https://brian-tech-shop.vercel.app](https://brian-tech-shop.vercel.app)
 
 ## 📝 Scripts
 
@@ -100,6 +102,10 @@ BrianTech-Shop/
 Dự án sử dụng TailwindCSS với custom theme. Xem `globals.css` để tùy chỉnh màu sắc và styles.
 
 ## 📦 Deployment
+
+### Framer (Landing Page)
+
+Trang landing page chính: [https://briantech-landingpage.framer.website/](https://briantech-landingpage.framer.website/)
 
 ### Vercel
 
